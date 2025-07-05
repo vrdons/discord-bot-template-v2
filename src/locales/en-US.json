@@ -1,0 +1,23 @@
+{
+  "error": {
+    "text": "Error",
+    "onCooldown": "Please wait {{{time}}}.",
+    "noAccess": {
+      "admin": "You have no access to use this command",
+      "dm": "You have no access that command in DM"
+    }
+  },
+  "success": {
+    "text": "Success"
+  },
+  "embeds": {
+    "author": "© {{ year }} {{ botname }} All rights reserved."
+  },
+  "commands": {
+    "status": {
+      "name": "status",
+      "description": "Returns my status",
+      "aliases": "stats,info,stat"
+    }
+  }
+}

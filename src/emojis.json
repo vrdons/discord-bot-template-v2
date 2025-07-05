@@ -1,0 +1,9 @@
+{
+  "loading": {
+    "fillStart": "[",
+    "fillMiddle": "=",
+    "fillEnd": "|",
+    "empty": "-",
+    "emptyEnd": "]"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "error": {
+    "text": "Hata",
+    "onCooldown": "Lütfen {{{time}}} tekrar bekleyin.",
+    "noAccess": {
+      "admin": "Bu komutu kullanma yetkin yok",
+      "dm": "Bu komutu özel mesajlarda kullanma iznin yok"
+    }
+  },
+  "success": {
+    "text": "Başarılı"
+  },
+  "embeds": {
+    "author": "© {{ year }} {{ botname }} Tüm haklar saklıdır."
+  },
+  "commands": {
+    "status": {
+      "description": "Botun istatistik panelini gösterir.",
+      "name": "istatistik",
+      "aliases": "commands.status.aliases"
+    }
+  }
+}
