@@ -6,7 +6,7 @@ import Paths from "./Paths";
 
 export default {
   name: "",
-  prefix: "!",
+  prefix: ["!", "!!"],
   admins: [],
   intents: [
     GatewayIntentBits.Guilds,

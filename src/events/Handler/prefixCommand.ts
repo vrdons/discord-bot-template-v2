@@ -9,12 +9,23 @@ export default Handlers.EventHandler({
   name: Events.MessageCreate,
   once: false,
   async handle(options, message) {
-    if (message.author.bot || !message.content.toLowerCase().startsWith(Bot.prefix)) {
+    if (message.author.bot) {
       message.channel.messages.cache.delete(message.id);
       return;
     }
 
-    const [cmd, ...args] = message.content.slice(Bot.prefix.length).trim().split(" ");
+    const content = message.content.trim();
+    const usedPrefix =
+      typeof Bot.prefix == "string"
+        ? Bot.prefix
+        : Bot.prefix.sort((a, b) => b.length - a.length).find((prefix) => content.toLowerCase().startsWith(prefix));
+
+    if (!usedPrefix) {
+      message.channel.messages.cache.delete(message.id);
+      return;
+    }
+
+    const [cmd, ...args] = message.content.slice(usedPrefix.length).trim().split(" ");
     const command =
       options.bot.commandHandler.prefixCommand.get(cmd.toLowerCase()) ||
       Array.from(options.bot.commandHandler.prefixCommand.values()).find((c) => c.data.aliases?.includes(cmd.toLowerCase()));

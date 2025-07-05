@@ -10,7 +10,6 @@ export class EventHandler {
     this.bot.client.removeAllListeners();
     if (!isFolder(Paths.eventsPath)) return createFolder(Paths.eventsPath);
     const events = await loadArray<EventHandlerOptions<keyof ClientEvents>>(Paths.eventsPath, true, "EVENTS");
-
     this.bot.client.on("shardReady", () => process?.send?.({ _ready: true }));
     this.bot.client.on("shardDisconnect", () => process?.send?.({ _disconnect: true }));
     this.bot.client.on("shardReconnecting", () => process?.send?.({ _reconnecting: true }));

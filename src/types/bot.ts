@@ -5,7 +5,7 @@ export type AllowedLanguage = LocaleString | Locale;
 import { CooldownOptions as co } from "@/structures/Cooldown";
 export type BotConfig = {
   name: string;
-  prefix: string;
+  prefix: string | string[];
   admins: string[];
   intents: BitFieldResolvable<GatewayIntentsString, number>;
   partials?: Partials[];

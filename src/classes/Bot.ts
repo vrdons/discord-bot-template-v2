@@ -1,5 +1,4 @@
-import { BitFieldResolvable, Client as TrueClient, GatewayIntentsString, Partials, Options, REST, Routes } from "discord.js";
-import ms from "ms";
+import { BitFieldResolvable, Client as TrueClient, GatewayIntentsString, Partials, REST, Routes } from "discord.js";
 
 import { CommandHandler } from "@/handlers/commandHandler";
 import { CooldownHandler } from "@/handlers/cooldownHandler";
@@ -18,29 +17,7 @@ export class Client {
     this.client = new TrueClient({
       intents,
       partials,
-      allowedMentions: { repliedUser: true },
-      sweepers: {
-        //Bellek optimizasyonu
-        ...Options.DefaultSweeperSettings,
-        messages: {
-          interval: ms("1h") / ms("1m"), // Her 1 saatte kontrol.
-          lifetime: ms("30m") / ms("1m") // 30 dakikadan önceki mesajları tutma.
-        },
-        users: {
-          interval: ms("30m") / ms("1m"), // Her 1 saatte kontrol.
-          filter: () => (user) => user.bot && user.id !== user.client.user.id //Tüm botları sil.
-        }
-      },
-      makeCache: Options.cacheWithLimits({
-        ...Options.DefaultMakeCacheSettings,
-        VoiceStateManager: 5,
-        DMMessageManager: 10,
-        MessageManager: 50,
-        GuildEmojiManager: 10,
-        BaseGuildEmojiManager: 10,
-        GuildMemberManager: 50,
-        UserManager: 50
-      })
+      allowedMentions: { repliedUser: true }
     });
 
     this.client.login(this.token);
