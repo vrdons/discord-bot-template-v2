@@ -122,7 +122,7 @@ export class LocaleHandler {
       where: { guildId }
     });
 
-    const guildLang = (guildValue?.language || guild?.preferredLocale) as AllowedLocale;
+    const guildLang = (guildValue?.language || guild?.preferredLocale && guild.features.includes("COMMUNITY")) as AllowedLocale;
     if (this.config.allowedLocales.includes(guildLang)) {
       return guildLang;
     }
