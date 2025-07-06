@@ -1,23 +1,22 @@
 import chalk from "chalk";
 import { Events, MessageFlags } from "discord.js";
 
-import { checkAccess, formatTimesamp } from "@/utils/utils";
+import { Handler } from "@/classes/Handler";
+import { CustomEmbed } from "@/classes/CustomEmbed";
+import { formatTimesamp } from "@/utils/discord";
 
-import { Handlers } from "@/structures/default";
-import { CustomEmbed } from "@/structures/Embed";
-
-export default Handlers.EventHandler({
+export default Handler.EventHandler({
   name: Events.InteractionCreate,
   once: false,
   async handle(options, interaction) {
     const opts = {
       ...options,
-      language: await options.bot.languageHandler.getLocale(interaction.user, interaction?.guild),
+      locale: await options.bot.localeHandler.getLocale(interaction.user, interaction?.guild),
       _e: options.bot.emojiHandler._e.bind(options.bot.emojiHandler),
       _c: options.bot.emojiHandler._c.bind(options.bot.emojiHandler),
-      _t: options.bot.languageHandler._t.bind(
-        options.bot.languageHandler,
-        await options.bot.languageHandler.getLocale(interaction.user, interaction?.guild)
+      _t: options.bot.localeHandler._t.bind(
+        options.bot.localeHandler,
+        await options.bot.localeHandler.getLocale(interaction.user, interaction?.guild)
       )
     };
     if (interaction.isChatInputCommand()) {
@@ -29,7 +28,7 @@ export default Handlers.EventHandler({
         return;
       }
 
-      if (command.detail.accessOnly && !checkAccess(interaction.user.id)) {
+      if (command.extra.accessOnly && !options.bot.permissionHandler.isAdmin(interaction.user.id)) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access to use this command '${interaction.commandName}' (${interaction.commandId}) `
         );
@@ -40,9 +39,8 @@ export default Handlers.EventHandler({
           flags: MessageFlags.Ephemeral,
           embeds: [embed]
         });
-        return;
       }
-      if (!command.detail.allowDM && interaction.channel?.isDMBased()) {
+      if (!command.extra.allowDM && interaction.channel?.isDMBased()) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access in DM '${interaction.commandName}' (${interaction.commandId}) `
         );
@@ -118,7 +116,7 @@ export default Handlers.EventHandler({
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         return;
       }
-      if (command.detail.accessOnly && !checkAccess(interaction.user.id)) {
+      if (command.extra.accessOnly && !options.bot.permissionHandler.isAdmin(interaction.user.id)) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access to use this command '${interaction.commandName}' (${interaction.commandId}) `
         );
@@ -130,7 +128,7 @@ export default Handlers.EventHandler({
           embeds: [embed]
         });
       }
-      if (!command.detail.allowDM && interaction.channel?.isDMBased()) {
+      if (!command.extra.allowDM && interaction.channel?.isDMBased()) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access in DM '${interaction.commandName}' (${interaction.commandId}) `
         );
