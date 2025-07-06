@@ -11,7 +11,7 @@ Bu proje, **Discord.js v14** ve **Bun.js** üzerine kurulmuş, modern bir Discor
 Bu altyapı; farklı kullanıcı etkileşimlerini destekleyecek şekilde 3 tür komut yapısını bir arada sunar:
 
 - **Prefix Komutları:** Kullanıcıların `!yardım`, `!ping` gibi klasik komutları yazmasını sağlar.
-  -- **Multi Prefix Desteği:** Kullanıcıların birden çok prefix kullanmasını olanak sağlar.
+- - **Multi Prefix Desteği:** Kullanıcıların birden çok prefix kullanmasını olanak sağlar.
 - **Slash Komutları:** Discord’un modern arayüzünde görünen `/yardım`, `/profil` gibi etkileşimli komutlar.
 - **Context Menu Komutları:** Kullanıcı veya mesaj üzerine sağ tıklanarak tetiklenen bağlam menüsü komutları.
 
