@@ -12,7 +12,7 @@ export class PrefixCommandBuilder {
   constructor(private bot: Client) {
     this.options = { name: "", aliases: [], allowDM: true, adminOnly: false };
   }
-  setALlowDm(enabled?: boolean) {
+  setAllowDm(enabled?: boolean) {
     this.options.allowDM = enabled !== undefined ? enabled : !this.options.allowDM;
     return this;
   }

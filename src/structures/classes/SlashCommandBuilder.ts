@@ -20,7 +20,7 @@ export class CustomSlashBuilder extends SlashCommandBuilder {
     this.extraSettings = { allowDM: true, adminOnly: false };
   }
 
-  setALlowDm(enabled?: boolean) {
+  setAllowDm(enabled?: boolean) {
     this.extraSettings.allowDM = enabled !== undefined ? enabled : !this.extraSettings.allowDM;
     return this;
   }
