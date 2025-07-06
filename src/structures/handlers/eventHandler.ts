@@ -1,6 +1,6 @@
 import { ClientEvents } from "discord.js";
 
-import { Client } from "@/classes/Bot";
+import { Client } from "@/structures/core/Bot";
 import Paths from "@/config/Paths";
 import { createFolder, isFolder, loadArray } from "@/utils/file";
 import { EventHandlerOptions } from "@/types/options/eventHandler";

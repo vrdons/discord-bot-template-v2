@@ -1,6 +1,6 @@
 import { Sequelize, SequelizeOptions } from "sequelize-typescript";
 
-import { Client } from "@/classes/Bot";
+import { Client } from "@/structures/core/Bot";
 import { BotSettings } from "@/types/settings";
 
 export class DatabaseHandler {

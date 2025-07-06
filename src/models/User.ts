@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType } from "sequelize-typescript";
 
-import { AllowedLocale } from "@/handlers/localeHandler";
+import { AllowedLocale } from "@/structures/handlers/localeHandler";
 
 @Table({
   tableName: "users",

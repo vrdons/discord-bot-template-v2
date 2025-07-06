@@ -1,16 +1,16 @@
 import { BitFieldResolvable, Client as TrueClient, GatewayIntentsString, Partials, REST, Routes } from "discord.js";
 
-import { CommandHandler } from "@/handlers/commandHandler";
-import { CooldownHandler } from "@/handlers/cooldownHandler";
-import { DatabaseHandler } from "@/handlers/databaseHandler";
-import { EmojiHandler } from "@/handlers/emojiHandler";
-import { EventHandler } from "@/handlers/eventHandler";
-import { LocaleHandler } from "@/handlers/localeHandler";
+import { CommandHandler } from "@/structures/handlers/commandHandler";
+import { CooldownHandler } from "@/structures/handlers/cooldownHandler";
+import { DatabaseHandler } from "@/structures/handlers/databaseHandler";
+import { EmojiHandler } from "@/structures/handlers/emojiHandler";
+import { EventHandler } from "@/structures/handlers/eventHandler";
+import { LocaleHandler } from "@/structures/handlers/localeHandler";
 import Locale from "@/config/Locale";
 import Paths, { ePaths } from "@/config/Paths";
 import Bot from "@/config/Bot";
 import Cooldown from "@/config/Cooldown";
-import { PermissionHandler } from "@/handlers/permissionHandler";
+import { PermissionManager } from "@/structures/handlers/permissionManager";
 
 export class Client {
   public client: TrueClient<true>;
@@ -45,5 +45,5 @@ export class Client {
   public cooldownHandler = new CooldownHandler(this, Cooldown);
   public commandHandler = new CommandHandler(this, ePaths, Paths);
   public eventHandler = new EventHandler(this);
-  public permissionHandler = new PermissionHandler(this, Bot);
+  public permissions = new PermissionManager(this, Bot);
 }

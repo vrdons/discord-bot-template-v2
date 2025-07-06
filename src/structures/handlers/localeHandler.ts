@@ -6,7 +6,7 @@ import UserDatabase from "@/models/User";
 import GuildDatabase from "@/models/Guild";
 import { isObject } from "@/utils/utils";
 import { LocaleSettings, Paths } from "@/types/settings";
-import { Client } from "@/classes/Bot";
+import { Client } from "@/structures/core/Bot";
 
 export type AllowedLocale = Locale;
 export type LocaleHeader = (string | Replacements)[];
@@ -59,30 +59,24 @@ export class LocaleHandler {
 
     return [keys, {}];
   }
-  generateArrayCommand(...args: LocaleHeader) {
+  addKey(str: string, ...args: LocaleHeader): LocaleHeader {
     const [Keys, Replace] = this.parseTranslationArgs(...args);
-    const key = Keys.join(".") + ".name";
-    const alias_key = Keys.join(".") + ".aliases";
-    const locales = this.config.allowedLocales;
-    let localizationArray: string[] = [""];
-    let localizationAliasArray: string[] = [""];
-    for (const language of locales) {
+    Keys.push(str);
+    return [...Keys, Replace];
+  }
+  generateLocalizationArray(...args: LocaleHeader) {
+    const [Keys, Replace] = this.parseTranslationArgs(...args);
+    const key = Keys.join(".");
+    const languages = this.config.allowedLocales;
+    const localizationArray = [];
+    for (const language of languages) {
       const translation = this.translate(key, language, Replace);
       if (!translation || translation === key || isObject(translation)) continue;
-      localizationArray.push(translation);
+      localizationArray.push({ language, translation });
     }
-    for (const language of locales) {
-      const translation_alias = this.translate(alias_key, language, Replace);
-      if (!translation_alias || translation_alias === key || isObject(translation_alias)) continue;
-      localizationAliasArray.push(translation_alias);
-    }
-    const aliasArray = localizationAliasArray.flatMap((x) => x.split(","));
-    return {
-      name: this.getDefaultLocalization(key),
-      aliases: [...aliasArray, ...localizationArray].filter((x) => x.length !== 0)
-    };
+    return localizationArray;
   }
-  generateLocalization(...args: LocaleHeader): LocalizationMap {
+  generateLocalizationMap(...args: LocaleHeader): LocalizationMap {
     const [Keys, Replace] = this.parseTranslationArgs(...args);
     const key = Keys.join(".");
     const languages = this.config.allowedLocales;

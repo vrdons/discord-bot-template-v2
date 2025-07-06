@@ -1,6 +1,6 @@
 import chalk from "chalk";
 
-import { Client } from "./classes/Bot";
+import { Client } from "./structures/core/Bot";
 import Bot from "./config/Bot";
 const clog = console.log;
 const formatText = () => `${chalk.gray(`[${chalk.red(process.env.SHARDS!)}]`)}`;

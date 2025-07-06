@@ -9,6 +9,5 @@ export default Handler.ContextMenuHandler({
   cooldown: (manager) => manager.saveDatabase(false).setCooldownTime(ms("10s")).setEnabled(true),
   async execute(_options, interaction) {
     await interaction.reply({ content: "helo" });
-  },
-  extra: {}
+  }
 });

@@ -5,7 +5,6 @@ import { Handler } from "@/classes/Handler";
 export default Handler.CommandHandler({
   data: (builder) => builder.setName("commands").setAliases(),
   cooldown: (manager) => manager.saveDatabase(false).setCooldownTime(ms("10s")).setEnabled(true),
-  extra: {},
   async execute(_options, message, _args, _cmd) {
     await message.reply({ content: "helo" });
   }

@@ -1,7 +1,7 @@
-import { Client } from "@/classes/Bot";
+import { Client } from "@/structures/core/Bot";
 import { BotSettings } from "@/types/settings";
 
-export class PermissionHandler {
+export class PermissionManager {
   constructor(
     private bot: Client,
     private config: BotSettings

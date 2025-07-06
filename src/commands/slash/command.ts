@@ -1,17 +1,11 @@
 import ms from "ms";
 
-import { Handler } from "@/classes/Handler";
+import { Handler } from "@/structures/core/Handler";
 export default Handler.SlashCommandHandler({
   cooldown: (manager) => manager.saveDatabase(false).setCooldownTime(ms("10s")).setEnabled(true),
 
-  data: (builder, options) =>
-    builder
-      .setName(options.getDefaultLocalization("commands", "status", "name"))
-      .setDescription(options.getDefaultLocalization("commands", "status", "description"))
-      .setNameLocalizations(options.generateLocalization("commands", "status", "name"))
-      .setDescriptionLocalizations(options.generateLocalization("commands", "status", "description")),
+  data: (builder) => builder.autoSet("commands", "status"),
   execute: async function (_options, interaction) {
     await interaction.reply({ content: "helo" });
-  },
-  extra: {}
+  }
 });

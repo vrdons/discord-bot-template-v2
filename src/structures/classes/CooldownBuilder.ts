@@ -1,6 +1,6 @@
-import { CooldownOptions, CooldownType } from "@/handlers/cooldownHandler";
+import { CooldownOptions, CooldownType } from "@/structures/handlers/cooldownHandler";
 
-export class CooldownManager {
+export class CooldownBuilder {
   private options: CooldownOptions;
   private defaultCooldown = require("@/config/Cooldown");
   constructor(options?: Partial<CooldownOptions>) {

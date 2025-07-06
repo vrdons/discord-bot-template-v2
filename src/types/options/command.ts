@@ -1,9 +1,11 @@
-import { ChatInputCommandInteraction, ContextMenuCommandBuilder, ContextMenuCommandInteraction, Message, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Message } from "discord.js";
 
-import { AllowedLocale, LocaleHandler } from "@/handlers/localeHandler";
-import { EmojiHandler } from "@/handlers/emojiHandler";
-import { CooldownManager } from "@/classes/CooldownManager";
-import { PrefixCommandBuilder } from "@/classes/PrefixCommandBuilder";
+import { AllowedLocale, LocaleHandler } from "@/structures/handlers/localeHandler";
+import { EmojiHandler } from "@/structures/handlers/emojiHandler";
+import { CooldownBuilder } from "@/structures/classes/CooldownBuilder";
+import { PrefixCommandBuilder } from "@/structures/classes/PrefixCommandBuilder";
+import { CustomSlashBuilder } from "@/structures/classes/SlashCommandBuilder";
+import { CustomContextBuilder } from "@/structures/classes/ContextMenuBuilder";
 
 import { MaybePromise } from "../global";
 
@@ -13,7 +15,7 @@ type LocaleHandlerInstance = InstanceType<typeof LocaleHandler>;
 type EmojiHandlerInstance = InstanceType<typeof EmojiHandler>;
 export interface BuilderOptions extends DefaultOptions {
   translate: LocaleHandlerInstance["translate"];
-  generateLocalization: LocaleHandlerInstance["generateLocalization"];
+  generateLocalization: LocaleHandlerInstance["generateLocalizationMap"];
   getDefaultLocalization: LocaleHandlerInstance["getDefaultLocalization"];
 }
 
@@ -23,26 +25,19 @@ export interface DefaultCommandOptions extends DefaultOptions {
   _e: EmojiHandlerInstance["_e"];
   _c: EmojiHandlerInstance["_c"];
 }
-export type ExtraSettings = {
-  allowDM?: boolean;
-  accessOnly?: boolean;
-};
 
 export type SlashCommandOptions = {
-  data: (builder: SlashCommandBuilder, options: BuilderOptions) => SlashCommandBuilder;
-  cooldown: (cooldown: CooldownManager) => CooldownManager;
+  data: (builder: CustomSlashBuilder, options: BuilderOptions) => CustomSlashBuilder;
+  cooldown: (cooldown: CooldownBuilder) => CooldownBuilder;
   execute(options: DefaultCommandOptions, interaction: ChatInputCommandInteraction): MaybePromise<any>;
-  extra: ExtraSettings;
 };
 export type ContextMenuOptions = {
-  data: (builder: ContextMenuCommandBuilder, options: BuilderOptions) => ContextMenuCommandBuilder;
-  cooldown: (cooldown: CooldownManager) => CooldownManager;
+  data: (builder: CustomContextBuilder, options: BuilderOptions) => CustomContextBuilder;
+  cooldown: (cooldown: CooldownBuilder) => CooldownBuilder;
   execute(options: DefaultCommandOptions, interaction: ContextMenuCommandInteraction): MaybePromise<any>;
-  extra: ExtraSettings;
 };
 export type CommandOptions = {
   data: (builder: PrefixCommandBuilder, options: BuilderOptions) => PrefixCommandBuilder;
-  extra: ExtraSettings;
-  cooldown: (cooldown: CooldownManager) => CooldownManager;
+  cooldown: (cooldown: CooldownBuilder) => CooldownBuilder;
   execute(options: DefaultCommandOptions, message: Message<boolean>, args: string[], cmd: string): MaybePromise<any>;
 };

@@ -1,8 +1,8 @@
 import { Events, MessageFlags } from "discord.js";
 
 import Bot from "@/config/Bot";
-import { Handler } from "@/classes/Handler";
-import { CustomEmbed } from "@/classes/CustomEmbed";
+import { Handler } from "@/structures/core/Handler";
+import { CustomEmbed } from "@/structures/classes/CustomEmbed";
 import { formatTimesamp } from "@/utils/discord";
 
 export default Handler.EventHandler({
@@ -42,7 +42,7 @@ export default Handler.EventHandler({
       _t: options.bot.localeHandler._t.bind(options.bot.localeHandler, await options.bot.localeHandler.getLocale(message.author, message?.guild))
     };
     console.debug(`${message.author.username} (${message.author.id}) used command '${command.data.name}'`);
-    if (command.extra.accessOnly && !options.bot.permissionHandler.isAdmin(message.author.id)) {
+    if (command.data.adminOnly && !options.bot.permissions.isAdmin(message.author.id)) {
       console.debug(`${message.author.username} (${message.author.id}) has no access to use this command '${command.data.name}'`);
       message.channel.messages.cache.delete(message.id);
       const embed = new CustomEmbed(opts, message);
@@ -53,7 +53,7 @@ export default Handler.EventHandler({
         embeds: [embed]
       });
     }
-    if (!command.extra.allowDM && message.channel?.isDMBased()) {
+    if (!command.data.allowDM && message.channel?.isDMBased()) {
       console.debug(`${message.author.username} (${message.author.id}) has no access in DM '${command.data.name}'`);
       message.channel.messages.cache.delete(message.id);
       const embed = new CustomEmbed(opts, message);

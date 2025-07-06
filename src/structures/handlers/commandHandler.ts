@@ -1,13 +1,14 @@
-import { ContextMenuCommandBuilder, SlashCommandBuilder } from "discord.js";
-
-import { Client } from "@/classes/Bot";
+import { Client } from "@/structures/core/Bot";
 import { createFolder, isFolder, loadArray } from "@/utils/file";
 import { arrayToMap } from "@/utils/utils";
 import { extendPaths, Paths } from "@/types/settings";
 import { ContextMenuData, PrefixCommandData, SlashCommandData } from "@/types/data/command";
 import { CommandOptions, ContextMenuOptions, SlashCommandOptions } from "@/types/options/command";
-import { PrefixCommandBuilder } from "@/classes/PrefixCommandBuilder";
-import { CooldownManager } from "@/classes/CooldownManager";
+import { PrefixCommandBuilder } from "@/structures/classes/PrefixCommandBuilder";
+import { CooldownBuilder } from "@/structures/classes/CooldownBuilder";
+
+import { CustomSlashBuilder } from "../classes/SlashCommandBuilder";
+import { CustomContextBuilder } from "../classes/ContextMenuBuilder";
 export class CommandHandler {
   slashCommand: Map<string, SlashCommandData> = new Map<string, SlashCommandData>();
   prefixCommand: Map<string, PrefixCommandData> = new Map<string, PrefixCommandData>();
@@ -29,15 +30,15 @@ export class CommandHandler {
     this.prefixCommand.clear();
     this.contextMenu = loadedContextMenu.map((cmd) => {
       const data = cmd
-        .data(new ContextMenuCommandBuilder(), {
+        .data(new CustomContextBuilder(this.bot), {
           bot: this.bot,
           translate: this.bot.localeHandler.translate.bind(this.bot.localeHandler),
-          generateLocalization: this.bot.localeHandler.generateLocalization.bind(this.bot.localeHandler),
+          generateLocalization: this.bot.localeHandler.generateLocalizationMap.bind(this.bot.localeHandler),
           getDefaultLocalization: this.bot.localeHandler.getDefaultLocalization.bind(this.bot.localeHandler)
         })
         .toJSON();
 
-      const cooldown = cmd.cooldown(new CooldownManager()).toJSON();
+      const cooldown = cmd.cooldown(new CooldownBuilder()).toJSON();
 
       return { ...cmd, data, cooldown };
     });
@@ -45,15 +46,15 @@ export class CommandHandler {
     this.prefixCommand = arrayToMap<PrefixCommandData>(
       loadedCommands.map((cmd) => {
         const data = cmd
-          .data(new PrefixCommandBuilder(this.bot.localeHandler), {
+          .data(new PrefixCommandBuilder(this.bot), {
             bot: this.bot,
             translate: this.bot.localeHandler.translate.bind(this.bot.localeHandler),
-            generateLocalization: this.bot.localeHandler.generateLocalization.bind(this.bot.localeHandler),
+            generateLocalization: this.bot.localeHandler.generateLocalizationMap.bind(this.bot.localeHandler),
             getDefaultLocalization: this.bot.localeHandler.getDefaultLocalization.bind(this.bot.localeHandler)
           })
           .toJSON();
 
-        const cooldown = cmd.cooldown(new CooldownManager()).toJSON();
+        const cooldown = cmd.cooldown(new CooldownBuilder()).toJSON();
 
         return { ...cmd, data, cooldown };
       }),
@@ -62,15 +63,15 @@ export class CommandHandler {
     this.slashCommand = arrayToMap<SlashCommandData>(
       loadedSlashCommand.map((cmd) => {
         const data = cmd
-          .data(new SlashCommandBuilder(), {
+          .data(new CustomSlashBuilder(this.bot), {
             bot: this.bot,
             translate: this.bot.localeHandler.translate.bind(this.bot.localeHandler),
-            generateLocalization: this.bot.localeHandler.generateLocalization.bind(this.bot.localeHandler),
+            generateLocalization: this.bot.localeHandler.generateLocalizationMap.bind(this.bot.localeHandler),
             getDefaultLocalization: this.bot.localeHandler.getDefaultLocalization.bind(this.bot.localeHandler)
           })
           .toJSON();
 
-        const cooldown = cmd.cooldown(new CooldownManager()).toJSON();
+        const cooldown = cmd.cooldown(new CooldownBuilder()).toJSON();
 
         return { ...cmd, data, cooldown };
       }),

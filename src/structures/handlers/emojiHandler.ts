@@ -4,7 +4,7 @@ import mustache from "mustache";
 
 import { getJSON } from "@/utils/file";
 import { isObject } from "@/utils/utils";
-import { Client } from "@/classes/Bot";
+import { Client } from "@/structures/core/Bot";
 import { Paths } from "@/types/settings";
 export class EmojiHandler {
   private emojiList: Record<string, string> = {};

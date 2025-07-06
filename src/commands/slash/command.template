@@ -12,6 +12,5 @@ export default Handler.SlashCommandHandler({
       .setDescriptionLocalizations(options.generateLocalization("commands", "status", "description")),
   execute: async function (_options, interaction) {
     await interaction.reply({ content: "helo" });
-  },
-  extra: {}
+  }
 });

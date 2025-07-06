@@ -2,7 +2,7 @@ import { Collection } from "discord.js";
 import { Op } from "sequelize";
 
 import CooldownModel from "@/models/Cooldown";
-import { Client } from "@/classes/Bot";
+import { Client } from "@/structures/core/Bot";
 import { CooldownSettings } from "@/types/settings";
 export enum CooldownType {
   USER = "user",

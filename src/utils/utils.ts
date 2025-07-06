@@ -19,53 +19,6 @@ export function checkInHere(userID: string, array: string[]) {
 }
 
 /**
- * Belirtilen yüzdeye göre Discord emoji tabanlı bir yükleme çubuğu oluşturur.
- *
- * @param percentage - Gösterilecek ilerleme yüzdesi (0-100 arası)
- * @param size - Yükleme çubuğunun toplam genişliği (varsayılan: 10)
- * @param options - Özelleştirme seçenekleri
- * @returns Oluşturulan emoji yükleme çubuğu metni
- */
-export function emojiLoadingBar(
-  percentage: number,
-  size: number = 10,
-  options: {
-    showPercentage?: boolean;
-  } = {},
-  icons: {
-    fillStart: string;
-    fillMiddle: string;
-    fillEnd: string;
-    empty: string;
-    emptyEnd: string;
-  }
-): string {
-  const clampedPercentage = Math.max(0, Math.min(100, percentage));
-  const { showPercentage = true } = options;
-  const { fillStart, fillMiddle, fillEnd, empty, emptyEnd } = icons;
-
-  const filledBars = Math.round((clampedPercentage / 100) * size);
-
-  if (filledBars === 0) {
-    let bar = empty.repeat(size - 1) + emptyEnd;
-    return showPercentage ? `${bar} ${Math.round(clampedPercentage)}%` : bar;
-  } else if (filledBars === size) {
-    let bar = fillStart + fillMiddle.repeat(size - 2) + fillEnd;
-    return showPercentage ? `${bar} ${Math.round(clampedPercentage)}%` : bar;
-  } else {
-    let bar = fillStart;
-    if (filledBars > 1) {
-      bar += fillMiddle.repeat(filledBars - 1);
-    }
-    if (size - filledBars > 0) {
-      bar += empty.repeat(size - filledBars - 1) + emptyEnd;
-    }
-
-    return showPercentage ? `${bar} ${Math.round(clampedPercentage)}%` : bar;
-  }
-}
-
-/**
  * Bir parçanın toplama göre yüzdesini hesaplar.
  *
  * @param part - Hesaplanacak parça değeri

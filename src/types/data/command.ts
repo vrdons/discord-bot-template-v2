@@ -1,37 +1,26 @@
-import {
-  ChatInputCommandInteraction,
-  ContextMenuCommandInteraction,
-  Message,
-  RESTPostAPIChatInputApplicationCommandsJSONBody,
-  RESTPostAPIContextMenuApplicationCommandsJSONBody
-} from "discord.js";
+import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Message } from "discord.js";
 
-import { CooldownOptions } from "@/handlers/cooldownHandler";
+import { CooldownOptions } from "@/structures/handlers/cooldownHandler";
+import { SlashCommandBody } from "@/structures/classes/SlashCommandBuilder";
+import { ContextMenuBody } from "@/structures/classes/ContextMenuBuilder";
+import { PrefixBody } from "@/structures/classes/PrefixCommandBuilder";
 
-import { ExtraSettings } from "../options/command";
+import { DefaultCommandOptions } from "../options/command";
 import { MaybePromise } from "../global";
 
-import { DefaultCommandOptions } from "@/structures/Commands";
-
 export type SlashCommandData = {
-  data: RESTPostAPIChatInputApplicationCommandsJSONBody;
+  data: SlashCommandBody;
   cooldown: CooldownOptions;
   execute(options: DefaultCommandOptions, interaction: ChatInputCommandInteraction): MaybePromise<any>;
-  extra: ExtraSettings;
 };
 export type ContextMenuData = {
-  data: RESTPostAPIContextMenuApplicationCommandsJSONBody;
+  data: ContextMenuBody;
   cooldown?: CooldownOptions;
   execute(options: DefaultCommandOptions, interaction: ContextMenuCommandInteraction): MaybePromise<any>;
-  extra: ExtraSettings;
 };
-export type CommandData = {
-  name: string;
-  aliases: string[];
-};
+
 export type PrefixCommandData = {
-  data: CommandData;
+  data: PrefixBody;
   cooldown?: CooldownOptions;
   execute(options: DefaultCommandOptions, message: Message<boolean>, args: string[], cmd: string): MaybePromise<any>;
-  extra: ExtraSettings;
 };

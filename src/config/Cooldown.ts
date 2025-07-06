@@ -1,7 +1,7 @@
 import ms from "ms";
 
 import { CooldownSettings } from "@/types/settings";
-import { CooldownType } from "@/handlers/cooldownHandler";
+import { CooldownType } from "@/structures/handlers/cooldownHandler";
 
 export default {
   cooldownTime: 3000,

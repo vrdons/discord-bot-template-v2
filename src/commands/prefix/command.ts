@@ -1,11 +1,10 @@
 import ms from "ms";
 
-import { Handler } from "@/classes/Handler";
+import { Handler } from "@/structures/core/Handler";
 
 export default Handler.CommandHandler({
   data: (builder) => builder.setName("commands").setAliases(),
   cooldown: (manager) => manager.saveDatabase(false).setCooldownTime(ms("10s")).setEnabled(true),
-  extra: {},
   async execute(_options, message, _args, _cmd) {
     await message.reply({ content: "helo" });
   }

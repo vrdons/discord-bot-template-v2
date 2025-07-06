@@ -3,7 +3,6 @@
   "module": "index.ts",
   "scripts": {
     "start": "bun --bun --env-file=.env index.ts",
-    "format": "prettier --write .",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix"
   },
@@ -26,7 +25,6 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "bytes": "^3.1.2",
     "chalk": "^5.4.1",
     "discord.js": "^14.21.0",
     "i18n": "^0.15.1",

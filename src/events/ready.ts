@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { Events } from "discord.js";
 import ms from "ms";
 
-import { Handler } from "@/classes/Handler";
+import { Handler } from "@/structures/core/Handler";
 
 export default Handler.EventHandler({
   name: Events.ClientReady,

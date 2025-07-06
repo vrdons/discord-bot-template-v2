@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import { Events, MessageFlags } from "discord.js";
 
-import { Handler } from "@/classes/Handler";
-import { CustomEmbed } from "@/classes/CustomEmbed";
+import { Handler } from "@/structures/core/Handler";
+import { CustomEmbed } from "@/structures/classes/CustomEmbed";
 import { formatTimesamp } from "@/utils/discord";
 
 export default Handler.EventHandler({
@@ -28,7 +28,7 @@ export default Handler.EventHandler({
         return;
       }
 
-      if (command.extra.accessOnly && !options.bot.permissionHandler.isAdmin(interaction.user.id)) {
+      if (command.data.adminOnly && !options.bot.permissions.isAdmin(interaction.user.id)) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access to use this command '${interaction.commandName}' (${interaction.commandId}) `
         );
@@ -40,7 +40,7 @@ export default Handler.EventHandler({
           embeds: [embed]
         });
       }
-      if (!command.extra.allowDM && interaction.channel?.isDMBased()) {
+      if (!command.data.allowDM && interaction.channel?.isDMBased()) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access in DM '${interaction.commandName}' (${interaction.commandId}) `
         );
@@ -116,7 +116,7 @@ export default Handler.EventHandler({
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         return;
       }
-      if (command.extra.accessOnly && !options.bot.permissionHandler.isAdmin(interaction.user.id)) {
+      if (command.data.adminOnly && !options.bot.permissions.isAdmin(interaction.user.id)) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access to use this command '${interaction.commandName}' (${interaction.commandId}) `
         );
@@ -128,7 +128,7 @@ export default Handler.EventHandler({
           embeds: [embed]
         });
       }
-      if (!command.extra.allowDM && interaction.channel?.isDMBased()) {
+      if (!command.data.allowDM && interaction.channel?.isDMBased()) {
         console.debug(
           `${interaction.user.username} (${interaction.user.id}) has no access in DM '${interaction.commandName}' (${interaction.commandId}) `
         );

@@ -1,8 +1,8 @@
 import { BitFieldResolvable, GatewayIntentsString, Partials } from "discord.js";
 import { SequelizeOptions } from "sequelize-typescript";
 
-import { CooldownOptions } from "@/handlers/cooldownHandler";
-import { AllowedLocale } from "@/handlers/localeHandler";
+import { CooldownOptions } from "@/structures/handlers/cooldownHandler";
+import { AllowedLocale } from "@/structures/handlers/localeHandler";
 
 export interface CooldownSettings extends CooldownOptions {
   invalidSession: number;
