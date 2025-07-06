@@ -1,12 +1,16 @@
 import { Sequelize, SequelizeOptions } from "sequelize-typescript";
 
-import Bot from "@/config/Bot";
+import { Client } from "@/classes/Bot";
+import { BotSettings } from "@/types/settings";
 
 export class DatabaseHandler {
   database: Sequelize;
-  constructor() {
+  constructor(
+    private _bot: Client,
+    private botConfig: BotSettings
+  ) {
     const config = {
-      ...Bot.database,
+      ...this.botConfig.database,
       dialectOptions: {
         charset: "utf8",
         collate: "utf8_unicode_ci",

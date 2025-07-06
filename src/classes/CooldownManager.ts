@@ -1,15 +1,4 @@
-export enum CooldownType {
-  USER = "user",
-  GUILD = "guild",
-  CHANNEL = "channel",
-  GLOBAL = "global"
-}
-export interface CooldownOptions {
-  cooldownTime: number;
-  saveDatabase: boolean;
-  enabled: boolean;
-  type?: CooldownType;
-}
+import { CooldownOptions, CooldownType } from "@/handlers/cooldownHandler";
 
 export class CooldownManager {
   private options: CooldownOptions;

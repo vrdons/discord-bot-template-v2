@@ -2,8 +2,9 @@ import chalk from "chalk";
 import { Events } from "discord.js";
 import ms from "ms";
 
-import { Handlers } from "@/structures/default";
-export default Handlers.EventHandler({
+import { Handler } from "@/classes/Handler";
+
+export default Handler.EventHandler({
   name: Events.ClientReady,
   once: false,
   handle({ bot }) {

@@ -1,9 +1,7 @@
 import { APIEmbed, EmbedBuilder, EmbedData, Interaction, Message, User } from "discord.js";
 
-import { getUser, getUserOrClientAvatar } from "@/utils/api";
-import Bot from "@/config/Bot";
-
-import { DefaultCommandOptions } from "./Commands";
+import { DefaultCommandOptions } from "@/types/options/command";
+import { getUser, getUserOrClientAvatar } from "@/utils/discord";
 
 export class CustomEmbed extends EmbedBuilder {
   private interactionUser: User;
@@ -17,7 +15,7 @@ export class CustomEmbed extends EmbedBuilder {
     this.interactionUser = getUser(this.interaction);
     this.setFooter({
       iconURL: getUserOrClientAvatar(this.interaction),
-      text: this.options._t("embeds", "author", { year: `${new Date().getFullYear()}`, botname: Bot.name })
+      text: this.options._t("embeds", "author", { year: `${new Date().getFullYear()}`, botname: options.bot.name })
     });
   }
   errorEmbed() {

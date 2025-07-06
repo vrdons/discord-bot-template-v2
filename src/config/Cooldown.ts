@@ -1,7 +1,7 @@
 import ms from "ms";
 
-import { CooldownType } from "@/structures/Cooldown";
-import { CooldownOptions } from "@/types/bot";
+import { CooldownSettings } from "@/types/settings";
+import { CooldownType } from "@/handlers/cooldownHandler";
 
 export default {
   cooldownTime: 3000,
@@ -9,4 +9,4 @@ export default {
   type: CooldownType.USER,
   saveDatabase: false,
   invalidSession: ms("30d") //30 gün
-} as CooldownOptions;
+} as CooldownSettings;

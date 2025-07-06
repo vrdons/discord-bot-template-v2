@@ -2,21 +2,25 @@ import { ColorResolvable, RGBTuple } from "discord.js";
 import ms from "ms";
 import mustache from "mustache";
 
-import Paths from "@/config/Paths";
 import { getJSON } from "@/utils/file";
-import { isObject, parseColor } from "@/utils/utils";
+import { isObject } from "@/utils/utils";
+import { Client } from "@/classes/Bot";
+import { Paths } from "@/types/settings";
 export class EmojiHandler {
   private emojiList: Record<string, string> = {};
   private colorList: Record<string, number | RGBTuple> = {};
   interval: NodeJS.Timeout = setInterval(() => {
     this.sync();
   }, ms("1m"));
-  constructor() {
+  constructor(
+    private _bot: Client,
+    private paths: Paths
+  ) {
     this.sync();
   }
   sync() {
-    this.emojiList = getJSON(Paths.emojisPath) as Record<string, string>;
-    this.colorList = getJSON(Paths.colorsPath) as Record<string, number | RGBTuple>;
+    this.emojiList = getJSON(this.paths.emojisPath) as Record<string, string>;
+    this.colorList = getJSON(this.paths.colorsPath) as Record<string, number | RGBTuple>;
   }
   _e(...args: string[]): string | undefined {
     const text = mustache.render(`{{{${args.join(".")}}}}`, this.emojiList);
@@ -33,4 +37,20 @@ export class EmojiHandler {
   putEmoji(text: string) {
     return mustache.render(text, this.emojiList, {}, { tags: ["[[", "]]"] });
   }
+}
+export function parseColor(input: string | number[]): number[] | undefined | number {
+  if (Array.isArray(input)) {
+    return input;
+  }
+
+  if (typeof input === "string" && input.includes(",")) {
+    return input.split(",").map((item) => Number(item.trim()));
+  }
+
+  if (typeof input === "string") {
+    const num = Number(input.trim());
+    return isNaN(num) ? undefined : num;
+  }
+
+  return undefined;
 }

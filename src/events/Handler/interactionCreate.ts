@@ -1,8 +1,9 @@
 import chalk from "chalk";
 import { Events, MessageFlags } from "discord.js";
 
-import { Handlers } from "@/structures/default";
 import { checkAccess, formatTimesamp } from "@/utils/utils";
+
+import { Handlers } from "@/structures/default";
 import { CustomEmbed } from "@/structures/Embed";
 
 export default Handlers.EventHandler({

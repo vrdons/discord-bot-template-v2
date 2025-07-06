@@ -5,10 +5,16 @@ import { CooldownHandler } from "@/handlers/cooldownHandler";
 import { DatabaseHandler } from "@/handlers/databaseHandler";
 import { EmojiHandler } from "@/handlers/emojiHandler";
 import { EventHandler } from "@/handlers/eventHandler";
-import { LanguageHandler } from "@/handlers/langaugeHandler";
+import { LocaleHandler } from "@/handlers/localeHandler";
+import Locale from "@/config/Locale";
+import Paths, { ePaths } from "@/config/Paths";
+import Bot from "@/config/Bot";
+import Cooldown from "@/config/Cooldown";
+import { PermissionHandler } from "@/handlers/permissionHandler";
 
 export class Client {
   public client: TrueClient<true>;
+  public name = Bot.name;
   constructor(
     private token: string,
     intents: BitFieldResolvable<GatewayIntentsString, number>,
@@ -33,10 +39,11 @@ export class Client {
     const data = (await rest.put(Routes.applicationCommands(this.client.user?.id), { body: commandData })) as { length: number };
     console.log(`Successfully reloaded ${data.length} application (/) commands.`);
   }
-  public emojiHandler = new EmojiHandler();
-  public languageHandler = new LanguageHandler(this.emojiHandler);
-  public database = new DatabaseHandler();
-  public cooldownHandler = new CooldownHandler();
-  public commandHandler = new CommandHandler(this);
+  public emojiHandler = new EmojiHandler(this, Paths);
+  public localeHandler = new LocaleHandler(this, Locale, Paths);
+  public database = new DatabaseHandler(this, Bot);
+  public cooldownHandler = new CooldownHandler(this, Cooldown);
+  public commandHandler = new CommandHandler(this, ePaths, Paths);
   public eventHandler = new EventHandler(this);
+  public permissionHandler = new PermissionHandler(this, Bot);
 }

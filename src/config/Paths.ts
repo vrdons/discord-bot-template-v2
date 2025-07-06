@@ -1,15 +1,18 @@
 import path from "path";
-export const commandsPath = path.join(process.cwd(), "src", "commands");
 
-const Paths = {
-  eventsPath: path.join(process.cwd(), "src", "events"),
-  prefixCommandsPath: path.join(commandsPath, "prefix"),
-  slashCommandsPath: path.join(commandsPath, "slash"),
-  contextMenusPath: path.join(commandsPath, "context"),
-  languagePath: path.join(process.cwd(), "src", "locales"),
-  emojisPath: path.join(process.cwd(), "src", "emojis.json"),
-  colorsPath: path.join(process.cwd(), "src", "colors.json"),
-  databaseModelsPath: path.join(process.cwd(), "src", "models")
-};
+import { extendPaths, Paths } from "@/types/settings";
+export const ePaths = {
+  rootPath: path.join(process.cwd(), "src"),
+  commandsPath: path.join(process.cwd(), "src", "commands")
+} as extendPaths;
 
-export default Paths;
+export default {
+  eventsPath: path.join(ePaths.rootPath, "events"),
+  prefixCommandsPath: path.join(ePaths.commandsPath, "prefix"),
+  slashCommandsPath: path.join(ePaths.commandsPath, "slash"),
+  contextMenusPath: path.join(ePaths.commandsPath, "context"),
+  localesPath: path.join(ePaths.rootPath, "locales"),
+  emojisPath: path.join(ePaths.rootPath, "emojis.json"),
+  colorsPath: path.join(ePaths.rootPath, "colors.json"),
+  databaseModelsPath: path.join(ePaths.rootPath, "models")
+} as Paths;

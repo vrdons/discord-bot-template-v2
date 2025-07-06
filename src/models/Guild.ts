@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType } from "sequelize-typescript";
 
-import { AllowedLanguage } from "@/types/bot";
+import { AllowedLocale } from "@/handlers/localeHandler";
 
 @Table({
   tableName: "guilds",
@@ -18,5 +18,5 @@ export default class Guild extends Model {
     type: DataType.STRING,
     allowNull: true
   })
-  language: AllowedLanguage | undefined;
+  language: AllowedLocale | undefined;
 }

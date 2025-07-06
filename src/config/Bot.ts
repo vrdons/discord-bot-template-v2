@@ -1,6 +1,6 @@
 import { GatewayIntentBits, Partials } from "discord.js";
 
-import { BotConfig } from "@/types/bot";
+import { BotSettings } from "@/types/settings";
 
 import Paths from "./Paths";
 
@@ -26,4 +26,4 @@ export default {
     logging: false,
     models: [Paths.databaseModelsPath]
   }
-} as BotConfig;
+} as BotSettings;

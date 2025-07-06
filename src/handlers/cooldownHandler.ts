@@ -1,9 +1,22 @@
 import { Collection } from "discord.js";
 import { Op } from "sequelize";
 
-import Cooldown from "@/models/Cooldown";
-import { CooldownOptions, CooldownType } from "@/structures/Cooldown";
-import Coptions from "@/config/Cooldown";
+import CooldownModel from "@/models/Cooldown";
+import { Client } from "@/classes/Bot";
+import { CooldownSettings } from "@/types/settings";
+export enum CooldownType {
+  USER = "user",
+  GUILD = "guild",
+  CHANNEL = "channel",
+  GLOBAL = "global"
+}
+export interface CooldownOptions {
+  cooldownTime: number;
+  saveDatabase: boolean;
+  enabled: boolean;
+  type?: CooldownType;
+}
+
 type CooldownInfo = {
   expireDate: number;
   options: CooldownOptions;
@@ -11,6 +24,10 @@ type CooldownInfo = {
 
 export class CooldownHandler {
   private cooldowns: Collection<string, CooldownInfo> = new Collection();
+  constructor(
+    private bot: Client,
+    private options: CooldownSettings
+  ) {}
   private defaultOptions: CooldownOptions = {
     cooldownTime: 3000,
     enabled: true,
@@ -55,14 +72,14 @@ export class CooldownHandler {
       }
     }, cooldownOptions.cooldownTime);
     if (cooldownOptions.saveDatabase) {
-      Cooldown.create({
+      CooldownModel.create({
         cooldownId: key,
         expiresDate: expireDate
       });
 
       setTimeout(async () => {
-        if (await Cooldown.findOne({ where: { cooldownId: key } })) {
-          await Cooldown.destroy({ where: { cooldownId: key } });
+        if (await CooldownModel.findOne({ where: { cooldownId: key } })) {
+          await CooldownModel.destroy({ where: { cooldownId: key } });
         }
       }, cooldownOptions.cooldownTime);
     }
@@ -91,7 +108,7 @@ export class CooldownHandler {
     const cooldown = this.cooldowns.get(key);
 
     if (!cooldown) {
-      const cooldown = await Cooldown.findOne({ where: { cooldownId: key } });
+      const cooldown = await CooldownModel.findOne({ where: { cooldownId: key } });
       if (!cooldown) {
         return {
           onCooldown: false,
@@ -103,7 +120,7 @@ export class CooldownHandler {
       const now = Date.now();
       const remainingTime = cooldown.expiresDate - now;
       if (remainingTime <= 0 || isNaN(remainingTime)) {
-        await Cooldown.destroy({ where: { cooldownId: key } });
+        await CooldownModel.destroy({ where: { cooldownId: key } });
         return {
           onCooldown: false,
           remainingTime: 0,
@@ -133,16 +150,16 @@ export class CooldownHandler {
     const targetId = this.getTargetId(cooldownOptions, userId, guildId, channelId);
     const key = this.createKey(commandId, targetId);
     this.cooldowns.delete(key);
-    await Cooldown.destroy({ where: { cooldownId: key } });
+    await CooldownModel.destroy({ where: { cooldownId: key } });
   }
   public async resetAllCooldowns() {
     this.cooldowns.clear();
-    await Cooldown.destroy({ where: {} });
+    await CooldownModel.destroy({ where: {} });
   }
   public async removeInvalidCooldowns() {
-    const date = Date.now() - Coptions.invalidSession;
+    const date = Date.now() - this.options.invalidSession;
     try {
-      await Cooldown.destroy({
+      await CooldownModel.destroy({
         where: {
           expiresDate: {
             [Op.lt]: date

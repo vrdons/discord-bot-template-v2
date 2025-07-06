@@ -1,7 +1,5 @@
-import { Replacements } from "i18n";
 export {};
 export type MaybePromise<T> = T | Promise<T>;
-export type LanguageHeader = (string | Replacements)[];
 declare global {
   namespace NodeJS {
     interface ProcessEnv {

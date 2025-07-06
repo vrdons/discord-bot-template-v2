@@ -1,11 +1,11 @@
 import { Events, MessageFlags } from "discord.js";
 
 import Bot from "@/config/Bot";
-import { Handlers } from "@/structures/default";
-import { checkAccess, formatTimesamp } from "@/utils/utils";
-import { CustomEmbed } from "@/structures/Embed";
+import { Handler } from "@/classes/Handler";
+import { CustomEmbed } from "@/classes/CustomEmbed";
+import { formatTimesamp } from "@/utils/discord";
 
-export default Handlers.EventHandler({
+export default Handler.EventHandler({
   name: Events.MessageCreate,
   once: false,
   async handle(options, message) {
@@ -36,16 +36,13 @@ export default Handlers.EventHandler({
 
     const opts = {
       ...options,
-      language: await options.bot.languageHandler.getLocale(message.author, message?.guild),
+      locale: await options.bot.localeHandler.getLocale(message.author, message?.guild),
       _e: options.bot.emojiHandler._e.bind(options.bot.emojiHandler),
       _c: options.bot.emojiHandler._c.bind(options.bot.emojiHandler),
-      _t: options.bot.languageHandler._t.bind(
-        options.bot.languageHandler,
-        await options.bot.languageHandler.getLocale(message.author, message?.guild)
-      )
+      _t: options.bot.localeHandler._t.bind(options.bot.localeHandler, await options.bot.localeHandler.getLocale(message.author, message?.guild))
     };
     console.debug(`${message.author.username} (${message.author.id}) used command '${command.data.name}'`);
-    if (command.detail.accessOnly && !checkAccess(message.author.id)) {
+    if (command.extra.accessOnly && !options.bot.permissionHandler.isAdmin(message.author.id)) {
       console.debug(`${message.author.username} (${message.author.id}) has no access to use this command '${command.data.name}'`);
       message.channel.messages.cache.delete(message.id);
       const embed = new CustomEmbed(opts, message);
@@ -56,7 +53,7 @@ export default Handlers.EventHandler({
         embeds: [embed]
       });
     }
-    if (!command.detail.allowDM && message.channel?.isDMBased()) {
+    if (!command.extra.allowDM && message.channel?.isDMBased()) {
       console.debug(`${message.author.username} (${message.author.id}) has no access in DM '${command.data.name}'`);
       message.channel.messages.cache.delete(message.id);
       const embed = new CustomEmbed(opts, message);
@@ -66,7 +63,6 @@ export default Handlers.EventHandler({
         flags: MessageFlags.SuppressNotifications,
         embeds: [embed]
       });
-      return;
     }
 
     const cooldownCheck =
