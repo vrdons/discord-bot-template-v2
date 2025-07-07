@@ -17,7 +17,7 @@ export class PrefixCommandBuilder {
     return this;
   }
   setAdminOnly(enabled?: boolean) {
-    this.options.allowDM = enabled !== undefined ? enabled : !this.options.adminOnly;
+    this.options.adminOnly = enabled !== undefined ? enabled : !this.options.adminOnly;
     return this;
   }
   setName(name: string) {
