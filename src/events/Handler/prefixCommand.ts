@@ -25,7 +25,16 @@ export default Handler.EventHandler({
       return;
     }
 
-    const [cmd, ...args] = message.content.slice(usedPrefix.length).trim().split(" ");
+      let [cmd, ...args] = message.content
+      .slice(usedPrefix.length)
+      .trim()
+      .split(" ")
+      .filter((x) => x);
+    args = args
+      .join(" ")
+      .replace(/(<#(\d{17,19})>|<@!?(\d{17,19})>|<@&(\d{17,19})>)/g, "")
+      .trim()
+      .split(/ +/g);
     const command =
       options.bot.commandHandler.prefixCommand.get(cmd.toLowerCase()) ||
       Array.from(options.bot.commandHandler.prefixCommand.values()).find((c) => c.data.aliases?.includes(cmd.toLowerCase()));
